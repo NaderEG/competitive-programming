@@ -1,44 +1,19 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-
 class Solution {
 public:
-    ListNode* addTwoNumbers_helper(ListNode* l1, ListNode* l2, int carry_on) {
-        if(!l1 && !l2) {
-            if (carry_on == 0) {
-                return nullptr;
-            } else {
-                return new ListNode(carry_on);
-            }
-        }
-
-        ListNode* node = new ListNode((carry_on + l1->val + l2->val) % 10);
-        node->next = addTwoNumbers_helper(l1->next, l2->next, (carry_on + l1->val + l2->val) / 10);
-        return node;
-
-    }
-
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* p1 = l1;
-        ListNode* p2 = l2;
-        while (p1->next || p2->next) {
-            if(!p1->next) {
-                p1->next = new ListNode(0);
-            }
-            if(!p2->next) {
-                p2->next = new ListNode(0);
-            }
-            p1 = p1->next;
-            p2 = p2->next;
+        int carry_on = 0;
+        ListNode* dummy = new ListNode(0);
+        ListNode* current = dummy;
+        while(l1 || l2 || carry_on) {
+            int val1 = l1 ? l1->val : 0;
+            int val2 = l2 ? l2->val : 0;
+            int sum = val1 + val2 + carry_on;
+            current->next = new ListNode(sum % 10);
+            current = current->next;
+            carry_on = sum / 10;
+            if(l1) l1 = l1->next;
+            if(l2) l2 = l2->next;
         }
-        return addTwoNumbers_helper(l1, l2, 0);
+        return dummy->next;
     }
 };
