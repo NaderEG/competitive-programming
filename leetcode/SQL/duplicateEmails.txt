@@ -1,0 +1,3 @@
+# Write your MySQL query statement below
+SELECT DISTINCT Em1.email AS Email FROM Person Em1, Person Em2
+WHERE Em1.id != Em2.id AND Em1.email = Em2.email;
